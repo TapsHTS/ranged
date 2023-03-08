@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Identification</title>
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+</head>
+
+<body>
+    <div class="formMenu">
+        <label col>Nom d'utilisateur</label>
+        <input type="text" id="username">
+        <label>Mot de passe</label>
+        <input type="password" id="password">
+    <a onclick="alert(`Ce site n'est pas lié à Ecole Directe et ne stocke en aucun cas vos informations personnelles. Elles sont utilisé pour la requête vers l'API d'école directe uniquement.`)">ℹ Informations ℹ</a>
+    <br>
+        <button type="submit" id="btn">Afficher mon rang</button>
+        <br>
+        <label>Résultat:</label>
+        <p id="resultat"></p>
+    </div>
+    <script>
+
+        const endpoint = "https://api.ecoledirecte.com/v3/";
+
+        const theHeader = {
+            'accept': 'application/json, text/plain, */*',
+            'content-type': 'application/x-www-form-urlencoded',
+            'x-token': '',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36',
+            }
+        
+
+        async function fetchED(url, body, token) {
+            let thisHeader = theHeader;
+            if (token) {
+                thisHeader["x-token"] = token;
+            }
+            try {
+
+                let bodyText = `data=${JSON.stringify(body)}`
+                let request = await fetch(`${endpoint}${url}`, {
+                    method: "post",
+                    headers: thisHeader,
+                    body: bodyText
+                });
+
+                let response = await request.json()
+
+                return response;
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
+        async function getToken(username, password) {
+            let body = {
+                "identifiant": username,
+                "motdepasse": password,
+            }
+            let response = await fetchED("login.awp", body)
+            return response.token;
+        }
+
+        async function getRang(token) {
+            let response = await fetchED("eleves/3030/notes.awp?verbe=get&v=4.27.4", {}, token)
+            return response.data.periodes[1].ensembleMatieres.disciplines
+        }
+
+        document.getElementById('btn').addEventListener('click', async function () {
+            let result = document.getElementById('resultat')
+            console.log('Calcul en cours...')
+            result.innerHTML = "<i>Calcul en cours...</i>"
+            setTimeout(() => {
+                result.innerHTML = ""
+            }, 2000);
+
+            const username = document.getElementById('username').value
+            const password = document.getElementById('password').value
+            let token = await getToken(username, password);
+            let rank = await getRang(token);
+
+            // pour tout les rank console.log(rank[i].rang)
+            for (let i = 0; i < rank.length; i++) {
+                // si le rank.rang est 0 on affiche pas
+                if (rank[i].rang == 0) {
+                    continue;
+                }
+                let text = `${rank[i].discipline} : ${rank[i].rang}/${rank[i].effectif}`
+
+                // reset p id="resultat" une seule fois
+                result.innerHTML += text + '<br>'
+            }
+        })
+    </script>
+</body>
+</html>

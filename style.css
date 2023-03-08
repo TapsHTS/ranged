@@ -1,0 +1,87 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: linear-gradient(to bottom, #0E4087, #0F8CCE);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .formMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: -300px;
+  }
+
+  label {
+    font-size: 16px;
+    color: #000000;
+    margin-bottom: 5px;
+  }
+  
+  input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+  }
+  
+  button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0F8FD1;
+    color: #ffffff;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  button:hover {
+    background-color: #1a81b4;
+  }
+
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 5px;
+    width: 100%;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+  }
+  
+  @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+
+    .formMenu {
+      margin-top: -750px;
+    }
+
+    label {
+      font-size: 50px;
+    }
+  
+    input {
+      font-size: 43px;
+    }
+  
+    button {
+      padding: 20px 40px;
+      font-size: 40px;
+      margin: 10px;
+    }
+    p {
+        font-size: 50px;
+    }
+  }
+  
